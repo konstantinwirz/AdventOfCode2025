@@ -12,10 +12,6 @@ enum Direction: Int, CustomStringConvertible {
     }
 }
 
-enum Day1Error: Error {
-    case badRotationInput(badLine: String)
-}
-
 struct Rotation: CustomStringConvertible {
     let direction: Direction
     let value: UInt
@@ -33,17 +29,17 @@ extension StringProtocol {
         }
     }
 
-    func parseRotation() throws(Day1Error) -> Rotation {
+    func parseRotation() throws(AocError) -> Rotation {
         let trimmed = self.trimmingCharacters(in: CharacterSet.whitespaces)
         guard trimmed.count >= 2 else {
-            throw Day1Error.badRotationInput(badLine: String(self))
+            throw AocError.badInput(input: String(self))
         }
 
         let direction: Direction =
             switch trimmed.first?.uppercased() {
             case "L": .left
             case "R": .right
-            default: throw Day1Error.badRotationInput(badLine: String(self))
+            default: throw AocError.badInput(input: String(self))
             }
 
         let valueStartIndex = trimmed.index(trimmed.startIndex, offsetBy: 1)
@@ -52,14 +48,13 @@ extension StringProtocol {
             return Rotation(direction: direction, value: value)
         }
 
-        throw Day1Error.badRotationInput(badLine: String(self))
+        throw AocError.badInput(input: String(self))
     }
 }
 
-struct Day1Solution {
+class Day1: Day {
 
-    func solvePart1() throws {
-        let input = try String(contentsOfFile: "TestInput/day1.txt", encoding: .utf8)
+    func solvePart1(input: String) throws -> String {
         let rotations = try input.parseRotations()
         var pwd: UInt = 0
         var counter: Int = 50
@@ -78,12 +73,11 @@ struct Day1Solution {
                 pwd += 1
             }
         }
-        print("[PART 1] PASSWORD: \(pwd)")
+
+        return String(pwd)
     }
 
-    func solvePart2() throws {
-        let input = try String(contentsOfFile: "TestInput/day1.txt", encoding: .utf8)
-
+    func solvePart2(input: String) throws -> String {
         let rotations = try input.parseRotations()
         var pwd: UInt = 0
         var dial: Int = 50
@@ -113,6 +107,6 @@ struct Day1Solution {
             }
         }
 
-        print("[PART 2] PASSWORD: \(pwd)")
+        return String(pwd)
     }
 }
