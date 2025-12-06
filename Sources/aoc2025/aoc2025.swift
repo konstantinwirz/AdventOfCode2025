@@ -26,7 +26,7 @@ struct AoC2025: ParsableCommand {
     }
 
     mutating func run() throws{
-        let days: [Day] = [Day1(), Day2()]
+        let days: [Day] = [Day1(), Day2(), Day3()]
         guard day <= days.count else {
             throw AocError.notYetImplemented
         }
